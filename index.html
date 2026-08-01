@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071526">
+<title>أنيس — النسخة السحابية</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --navy:#071526;--navy2:#0b2238;--teal:#16b8b2;--mint:#58d5b5;
+  --violet:#7c4dff;--violet2:#a78bfa;--text:#eff7fb;--muted:#91a5b4;
+  --card:#0d263c;--line:rgba(255,255,255,.09);--danger:#ff6b6b;--warn:#f6b94a;
+  --good:#42d39b;--white:#fff;--shadow:0 18px 50px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#06121f,#0b2035);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.hidden{display:none!important}.app{max-width:560px;margin:auto;min-height:100vh;padding-bottom:92px}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(7,21,38,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px}.brandmark{width:38px;height:38px;border-radius:13px;background:var(--navy2);position:relative;box-shadow:inset 0 0 0 1px rgba(88,213,181,.25)}
+.brandmark:before,.brandmark:after{content:"";position:absolute;border-radius:100% 0 100% 0;transform:rotate(-28deg)}
+.brandmark:before{width:26px;height:7px;background:#fff;right:6px;top:10px}.brandmark:after{width:21px;height:6px;background:linear-gradient(90deg,var(--teal),var(--mint));right:7px;top:21px}
+.brand strong{font-size:20px}.brand small{display:block;color:var(--muted);font-size:11px}
+.account-switch{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);padding:9px 11px;border-radius:12px;max-width:190px}
+main{padding:16px}.page{display:none}.page.active{display:block}
+.card{background:linear-gradient(180deg,rgba(15,43,67,.96),rgba(11,33,53,.96));border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.hero{background:linear-gradient(135deg,rgba(22,184,178,.18),rgba(124,77,255,.16));overflow:hidden;position:relative}
+.hero:after{content:"";position:absolute;width:130px;height:130px;border-radius:50%;background:rgba(88,213,181,.08);left:-30px;top:-55px}
+h1,h2,h3,p{margin-top:0}h2{font-size:20px}h3{font-size:16px}.muted{color:var(--muted)}.tiny{font-size:12px}.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.wrap{flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat{padding:12px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.035)}.stat b{font-size:18px;display:block;margin-top:4px}
+.btn{border:0;border-radius:13px;padding:12px 15px;background:linear-gradient(135deg,var(--teal),#25c89b);color:#041d24;font-weight:800}
+.btn.secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--line)}.btn.violet{background:linear-gradient(135deg,var(--violet),var(--violet2));color:#fff}.btn.danger{background:rgba(255,107,107,.14);color:#ff9d9d;border:1px solid rgba(255,107,107,.25)}.btn.small{padding:8px 11px;font-size:12px}
+.input{width:100%;border:1px solid var(--line);background:#081c2d;color:var(--text);padding:13px;border-radius:13px;outline:none;margin:6px 0 12px}.input:focus{border-color:var(--teal)}textarea.input{min-height:90px;resize:vertical}
+.label{font-size:13px;color:#c7d6df;font-weight:700}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 13px}.chip{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);padding:9px 12px;border-radius:999px}.chip.active{background:rgba(22,184,178,.18);border-color:var(--teal);color:#a9fff2}
+.list{display:flex;flex-direction:column;gap:9px}.item{border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:15px;padding:12px}.item:hover{background:rgba(255,255,255,.05)}
+.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--teal),var(--violet));font-weight:900}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;font-size:11px;background:rgba(255,255,255,.07);border:1px solid var(--line)}.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.status-pending{color:var(--warn)}.status-approved,.status-settled{color:var(--good)}.status-rejected{color:var(--danger)}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(560px,100%);z-index:30;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(6,19,32,.95);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom))}
+.nav button{border:0;background:none;color:var(--muted);padding:7px 2px;font-size:11px}.nav button span{display:block;font-size:21px;margin-bottom:2px}.nav button.active{color:var(--mint)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:grid;align-items:end;justify-items:center;padding:16px}
+.modal{width:min(560px,100%);max-height:92vh;overflow:auto;background:#0a2135;border:1px solid var(--line);border-radius:24px 24px 18px 18px;padding:18px;box-shadow:var(--shadow)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;position:sticky;top:-18px;background:#0a2135;padding:10px 0;z-index:3}.close{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;font-size:20px}
+.toast{position:fixed;z-index:200;bottom:100px;left:50%;transform:translateX(-50%);width:min(90%,480px);padding:13px 16px;border-radius:14px;background:#132e45;color:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.auth{min-height:100vh;display:grid;place-items:center;padding:24px}.authbox{width:min(430px,100%)}.auth-logo{display:grid;place-items:center;margin-bottom:25px}.auth-logo .brandmark{width:82px;height:82px;border-radius:25px}.auth-logo .brandmark:before{width:55px;height:13px;right:13px;top:24px}.auth-logo .brandmark:after{width:44px;height:11px;right:16px;top:47px}
+.owner-mark{display:inline-flex;align-items:center;gap:8px;color:#c9cdd7;font-size:11px;margin-top:18px}.chev{color:var(--violet);font-weight:900;font-size:22px;text-shadow:0 0 12px rgba(124,77,255,.7)}.owner-rights{color:#8995a7;font-size:10px;margin-top:5px}
+.trust-card{border:1px solid rgba(124,77,255,.3);background:linear-gradient(135deg,rgba(124,77,255,.12),rgba(22,184,178,.08))}.trust-level{font-weight:900}.meter{height:8px;border-radius:10px;background:rgba(255,255,255,.08);overflow:hidden}.meter>i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--violet))}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.product{text-align:center;border:1px solid var(--line);border-radius:15px;padding:12px;background:rgba(255,255,255,.035)}.product .ico{font-size:30px}
+.empty{text-align:center;color:var(--muted);padding:25px 10px}
+.admin-accent{border-color:rgba(124,77,255,.4)}.divider{height:1px;background:var(--line);margin:14px 0}
+@media(max-width:420px){.grid3{grid-template-columns:1fr 1fr}.product-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div id="authView" class="auth">
+  <div class="authbox">
+    <div class="auth-logo">
+      <div class="brandmark"></div>
+      <h1 style="margin:14px 0 4px">أنيس</h1>
+      <div class="muted">تعاملات أوضح، حقوق محفوظة</div>
+    </div>
+    <div class="card">
+      <div class="chips">
+        <button class="chip active" data-auth-tab="login">تسجيل الدخول</button>
+        <button class="chip" data-auth-tab="signup">إنشاء حساب</button>
+      </div>
+      <form id="loginForm">
+        <label class="label">البريد الإلكتروني</label><input id="loginEmail" class="input" type="email" required>
+        <label class="label">كلمة المرور</label><input id="loginPassword" class="input" type="password" required>
+        <button class="btn" style="width:100%">دخول</button>
+      </form>
+      <form id="signupForm" class="hidden">
+        <label class="label">الاسم الكامل</label><input id="signupName" class="input" required>
+        <label class="label">اليوزر</label><input id="signupUsername" class="input" placeholder="4–20 حرفًا بدون @" required>
+        <label class="label">البريد الإلكتروني</label><input id="signupEmail" class="input" type="email" required>
+        <label class="label">كلمة المرور</label><input id="signupPassword" class="input" type="password" minlength="8" required>
+        <button class="btn violet" style="width:100%">إنشاء الحساب</button>
+      </form>
+    </div>
+    <div style="text-align:center">
+      <div class="owner-mark">A Product by <span class="chev">›</span></div>
+      <div class="owner-rights">© 2026 All Rights Reserved</div>
+    </div>
+  </div>
+</div>
+
+<div id="appView" class="app hidden">
+<header class="topbar">
+  <div class="brand"><div class="brandmark"></div><div><strong>أنيس</strong><small id="activeAccountLabel">—</small></div></div>
+  <select id="accountSwitch" class="account-switch"></select>
+</header>
+
+<main>
+<section id="page-home" class="page active">
+  <div class="card hero">
+    <div class="row between"><div><div class="muted tiny">مرحبًا</div><h2 id="welcomeName">—</h2></div><button id="quickAdd" class="btn">+ عملية</button></div>
+    <div class="grid3">
+      <div class="stat"><span class="muted tiny">بانتظارك</span><b id="pendingCount">0</b></div>
+      <div class="stat"><span class="muted tiny">الحسابات</span><b id="connectionsCount">0</b></div>
+      <div class="stat"><span class="muted tiny">الإشعارات</span><b id="notificationsCount">0</b></div>
+    </div>
+  </div>
+  <div id="trustHome" class="card trust-card"></div>
+  <div class="card">
+    <div class="row between"><h3>اختصارات</h3><span class="tiny muted">أقل خطوات</span></div>
+    <div class="grid3">
+      <button class="btn secondary quick-type" data-type="paid">دفعت</button>
+      <button class="btn secondary quick-type" data-type="received">استلمت</button>
+      <button class="btn secondary quick-type" data-type="ledger">قيد</button>
+      <button class="btn secondary" id="openSearchBtn">إضافة حساب</button>
+      <button class="btn secondary" id="openWalletBtn">الأرصدة</button>
+      <button class="btn secondary" id="openBusinessBtn">حساب تجاري</button>
+    </div>
+  </div>
+  <div class="card"><div class="row between"><h3>آخر العمليات</h3><button class="btn small secondary" data-nav="transactions">الكل</button></div><div id="recentTransactions" class="list"></div></div>
+</section>
+
+<section id="page-people" class="page">
+  <div class="card">
+    <h2>الحسابات والمتاجر</h2>
+    <div class="row"><input id="searchInput" class="input" placeholder="@username أو الاسم" style="margin:0"><button id="searchBtn" class="btn">بحث</button></div>
+    <div id="searchResults" class="list" style="margin-top:12px"></div>
+  </div>
+  <div class="card"><div class="row between"><h3>طلبات الإضافة</h3><span id="requestBadge" class="badge">0</span></div><div id="connectionRequests" class="list"></div></div>
+  <div class="card"><h3>المضافون</h3><div id="connectionsList" class="list"></div></div>
+</section>
+
+<section id="page-transactions" class="page">
+  <div class="row between" style="margin-bottom:12px"><h2>العمليات</h2><button id="transactionAddTop" class="btn">+ إضافة</button></div>
+  <div class="chips" id="transactionFilters">
+    <button class="chip active" data-filter="all">الكل</button><button class="chip" data-filter="pending">معلقة</button><button class="chip" data-filter="approved">معتمدة</button><button class="chip" data-filter="settled">مسددة</button>
+  </div>
+  <div id="transactionsList" class="list"></div>
+</section>
+
+<section id="page-business" class="page">
+  <div class="card">
+    <div class="row between"><h2>التجاري والمتاجر</h2><button id="createBusinessBtn" class="btn violet">+ حساب تجاري</button></div>
+    <div id="myBusinessAccounts" class="list"></div>
+  </div>
+  <div class="card"><h3>متاجر مضافة</h3><div id="storesList" class="list"></div></div>
+  <div class="card"><h3>الطلبات</h3><div id="ordersList" class="list"></div></div>
+</section>
+
+<section id="page-more" class="page">
+  <div class="card"><h2>المزيد</h2>
+    <div class="list">
+      <button id="openWalletsMore" class="item btn secondary">الصناديق والبنوك والمحافظ</button>
+      <button id="openNotifications" class="item btn secondary">الإشعارات</button>
+      <button id="refreshTrustBtn" class="item btn secondary">تحديث مؤشرات التعامل</button>
+      <button id="logoutBtn" class="item btn danger">تسجيل الخروج</button>
+    </div>
+  </div>
+  <div id="adminEntry" class="card admin-accent hidden">
+    <div class="row between"><div><h3>لوحة إدارة أنيس</h3><div class="muted tiny">تظهر للمالك والإدارة فقط</div></div><button class="btn violet" data-nav="admin">فتح</button></div>
+  </div>
+  <div class="card" style="text-align:center">
+    <div class="owner-mark">A Product by <span class="chev">›</span></div>
+    <div class="owner-rights">© 2026 All Rights Reserved</div>
+  </div>
+</section>
+
+<section id="page-admin" class="page">
+  <div class="card admin-accent"><div class="row between"><div><h2>لوحة الإدارة</h2><span class="badge"><span class="dot" style="background:var(--violet)"></span>Owner</span></div><button class="btn secondary small" data-nav="more">رجوع</button></div>
+    <div class="grid3" style="margin-top:12px"><div class="stat"><span class="tiny muted">المستخدمون</span><b id="adminUsers">0</b></div><div class="stat"><span class="tiny muted">الحسابات</span><b id="adminAccounts">0</b></div><div class="stat"><span class="tiny muted">البلاغات</span><b id="adminReports">0</b></div></div>
+  </div>
+  <div class="card"><h3>إرسال تعميم</h3><input id="announcementTitle" class="input" placeholder="العنوان"><textarea id="announcementBody" class="input" placeholder="النص"></textarea><button id="publishAnnouncementBtn" class="btn violet">نشر</button></div>
+  <div class="card"><h3>الحسابات المسجلة</h3><div id="adminAccountsList" class="list"></div></div>
+  <div class="card"><h3>البلاغات</h3><div id="adminReportsList" class="list"></div></div>
+</section>
+</main>
+
+<nav class="nav">
+  <button class="active" data-nav="home"><span>⌂</span>الرئيسية</button>
+  <button data-nav="people"><span>◎</span>الحسابات</button>
+  <button data-nav="transactions"><span>⇄</span>العمليات</button>
+  <button data-nav="business"><span>▦</span>التجاري</button>
+  <button data-nav="more"><span>☰</span>المزيد</button>
+</nav>
+</div>
+
+<div id="modalRoot"></div><div id="toast" class="toast hidden"></div>
+
+<script>
+const SUPABASE_URL='https://oxrufzwcymdvuvvnwvwi.supabase.co';
+const SUPABASE_KEY='sb_publishable_P8_BlK8B4CVyy9dbo_4SSg_q1er30hB';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const state={session:null,user:null,profile:null,accounts:[],activeAccount:null,connections:[],transactions:[],orders:[],isAdmin:false,filter:'all'};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function toast(msg,kind='ok'){const el=$('#toast');el.textContent=msg;el.style.borderColor=kind==='err'?'rgba(255,107,107,.5)':'rgba(88,213,181,.35)';el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),3500)}
+function modal(html){$('#modalRoot').innerHTML=`<div class="modal-backdrop"><div class="modal">${html}</div></div>`;$('#modalRoot .close')?.addEventListener('click',closeModal)}
+function closeModal(){$('#modalRoot').innerHTML=''}
+function money(v,c){return `${Number(v||0).toLocaleString('ar')} ${c||''}`}
+function initials(n){return (n||'أ').trim().slice(0,1)}
+function statusAr(s){return ({draft:'مسودة',pending:'بانتظار الاعتماد',change_requested:'مطلوب تعديل',approved:'معتمدة',partially_settled:'مسددة جزئيًا',settled:'مسددة',rejected:'مرفوضة',cancelled:'ملغاة',disputed:'نزاع'})[s]||s}
+function operationAr(s){return ({paid:'دفعت',received:'استلمت',ledger:'قيد',sale:'بيع',purchase:'شراء',internal_transfer:'تحويل',expense:'مصروف',settlement:'سداد',opening_balance:'رصيد افتتاحي'})[s]||s}
+function saveDraft(name,data){localStorage.setItem('anis_draft_'+name,JSON.stringify(data))}
+function loadDraft(name){try{return JSON.parse(localStorage.getItem('anis_draft_'+name)||'null')}catch{return null}}
+function clearDraft(name){localStorage.removeItem('anis_draft_'+name)}
+
+async function boot(){
+ const {data:{session}}=await sb.auth.getSession();
+ if(session) await enterApp(session); else showAuth();
+ sb.auth.onAuthStateChange(async(_e,s)=>{if(s&&!state.session)await enterApp(s);if(!s)showAuth()});
+}
+function showAuth(){state.session=null;$('#authView').classList.remove('hidden');$('#appView').classList.add('hidden')}
+async function enterApp(session){
+ state.session=session;state.user=session.user;$('#authView').classList.add('hidden');$('#appView').classList.remove('hidden');
+ await loadCore();subscribeRealtime();
+}
+async function loadCore(){
+ const uid=state.user.id;
+ let {data:profile}=await sb.from('profiles').select('*').eq('user_id',uid).single();state.profile=profile;
+ let {data:accounts,error}=await sb.from('accounts').select('*').eq('owner_user_id',uid).order('is_primary',{ascending:false});
+ if(error)toast(error.message,'err');state.accounts=accounts||[];
+ state.activeAccount=state.accounts.find(a=>a.id===localStorage.getItem('anis_active_account'))||state.accounts[0]||null;
+ const {data:admin}=await sb.rpc('get_my_admin_status');state.isAdmin=!!(admin?.[0]?.is_owner||admin?.[0]?.is_admin);
+ renderHeader();await Promise.all([loadConnections(),loadTransactions(),loadNotifications(),loadBusinesses(),loadOrders(),renderTrust(),loadAdmin()]);
+ renderAll();
+}
+function renderHeader(){
+ $('#welcomeName').textContent=state.profile?.full_name||'مستخدم أنيس';
+ $('#activeAccountLabel').textContent=state.activeAccount?`@${state.activeAccount.username}`:'لا يوجد حساب';
+ $('#accountSwitch').innerHTML=state.accounts.map(a=>`<option value="${a.id}" ${a.id===state.activeAccount?.id?'selected':''}>${esc(a.display_name)} — @${esc(a.username)}</option>`).join('');
+ $('#adminEntry').classList.toggle('hidden',!state.isAdmin);
+}
+async function loadConnections(){
+ if(!state.activeAccount)return;
+ const id=state.activeAccount.id;
+ const {data}=await sb.from('connections').select('*,requester:accounts!connections_requester_account_id_fkey(id,display_name,username,account_type,category),addressee:accounts!connections_addressee_account_id_fkey(id,display_name,username,account_type,category)').or(`requester_account_id.eq.${id},addressee_account_id.eq.${id}`).order('requested_at',{ascending:false});
+ state.connections=data||[];
+}
+async function loadTransactions(){
+ if(!state.activeAccount)return;
+ const id=state.activeAccount.id;
+ const {data,error}=await sb.from('transactions').select('*,creator:accounts!transactions_creator_account_id_fkey(display_name,username),counterparty:accounts!transactions_counterparty_account_id_fkey(display_name,username)').or(`creator_account_id.eq.${id},counterparty_account_id.eq.${id}`).order('created_at',{ascending:false}).limit(100);
+ if(error)console.warn(error);state.transactions=data||[];
+}
+async function loadNotifications(){
+ const {data}=await sb.from('notifications').select('*').eq('recipient_user_id',state.user.id).order('created_at',{ascending:false}).limit(50);state.notifications=data||[];
+}
+async function loadBusinesses(){
+ const businesses=state.accounts.filter(a=>a.account_type==='business');state.businesses=businesses;
+}
+async function loadOrders(){
+ if(!state.activeAccount)return;
+ const id=state.activeAccount.id;
+ const {data}=await sb.from('orders').select('*,buyer:accounts!orders_buyer_account_id_fkey(display_name,username),seller:accounts!orders_seller_account_id_fkey(display_name,username)').or(`buyer_account_id.eq.${id},seller_account_id.eq.${id}`).order('created_at',{ascending:false});
+ state.orders=data||[];
+}
+async function renderTrust(){
+ if(!state.activeAccount)return;
+ const {data,error}=await sb.rpc('get_account_trust_summary',{p_account_id:state.activeAccount.id});
+ const t=data?.[0];state.trust=t;
+ $('#trustHome').innerHTML=t?`<div class="row between"><div><div class="tiny muted">Anis Verified Activity</div><h3 style="margin:5px 0" class="trust-level">${esc(t.activity_name_ar)}</h3></div><span class="badge"><span class="dot" style="background:${t.badge_color}"></span>${t.identity_verified?'هوية موثقة':'هوية غير موثقة'}</span></div>
+ <div class="grid2"><div class="stat"><span class="tiny muted">الالتزامات المكتملة</span><b>${t.completed_obligations}</b></div><div class="stat"><span class="tiny muted">أطراف مستقلة</span><b>${t.independent_counterparties}</b></div><div class="stat"><span class="tiny muted">الالتزام بالسداد</span><b style="font-size:14px">${esc(t.payment_commitment)}</b></div><div class="stat"><span class="tiny muted">عبء الالتزامات</span><b style="font-size:14px">${esc(t.debt_burden_label)}</b></div></div><p class="tiny muted" style="margin:12px 0 0">هذه المؤشرات إرشادية ولا تمثل ضمانًا للسداد.</p>`:`<div class="empty">تعذر تحميل المؤشرات</div>`;
+ if(error)console.warn(error);
+}
+async function loadAdmin(){
+ if(!state.isAdmin)return;
+ const [p,a,r]=await Promise.all([sb.from('profiles').select('user_id',{count:'exact',head:true}),sb.from('accounts').select('id',{count:'exact',head:true}),sb.from('user_reports').select('id',{count:'exact',head:true})]);
+ $('#adminUsers').textContent=p.count||0;$('#adminAccounts').textContent=a.count||0;$('#adminReports').textContent=r.count||0;
+ const {data:accts}=await sb.from('accounts').select('id,display_name,username,account_type,suspended_at').order('created_at',{ascending:false}).limit(50);
+ $('#adminAccountsList').innerHTML=(accts||[]).map(a=>`<div class="item row between"><div><b>${esc(a.display_name)}</b><div class="tiny muted">@${esc(a.username)} · ${a.account_type}</div></div><button class="btn small ${a.suspended_at?'secondary':'danger'} admin-suspend" data-id="${a.id}" data-suspended="${!!a.suspended_at}">${a.suspended_at?'إلغاء الإيقاف':'إيقاف'}</button></div>`).join('')||'<div class="empty">لا حسابات</div>';
+ const {data:reports}=await sb.from('user_reports').select('*').order('created_at',{ascending:false}).limit(30);
+ $('#adminReportsList').innerHTML=(reports||[]).map(r=>`<div class="item"><b>${esc(r.category)}</b><div class="tiny muted">${esc(r.status)} · ${new Date(r.created_at).toLocaleDateString('ar')}</div><p>${esc(r.description||'')}</p></div>`).join('')||'<div class="empty">لا بلاغات</div>';
+ $$('.admin-suspend').forEach(b=>b.onclick=async()=>{const reason=b.dataset.suspended?'رفع الإيقاف':'مراجعة إدارية';const {error}=await sb.rpc('admin_set_account_suspension',{p_account_id:b.dataset.id,p_reason:reason,p_suspend:b.dataset.suspended!=='true'});if(error)toast(error.message,'err');else{toast('تم التحديث');loadAdmin()}});
+}
+function renderAll(){
+ renderHome();renderConnections();renderTransactions();renderBusiness();renderNotificationsCount();
+}
+function renderHome(){
+ const pending=state.transactions.filter(t=>t.status==='pending'&&t.counterparty_account_id===state.activeAccount?.id).length;
+ $('#pendingCount').textContent=pending;$('#connectionsCount').textContent=state.connections.filter(c=>c.status==='accepted').length;
+ $('#recentTransactions').innerHTML=state.transactions.slice(0,5).map(transactionCard).join('')||'<div class="empty">لا عمليات بعد</div>';
+}
+function transactionCard(t){
+ const other=t.creator_account_id===state.activeAccount?.id?t.counterparty:t.creator;
+ return `<div class="item"><div class="row between"><div><b>${operationAr(t.operation_type)} · ${money(t.amount,t.currency_code)}</b><div class="tiny muted">${esc(other?.display_name||'عملية داخلية')} · ${new Date(t.created_at).toLocaleDateString('ar')}</div></div><span class="badge status-${t.status}">${statusAr(t.status)}</span></div>${t.description?`<p class="tiny muted" style="margin:8px 0 0">${esc(t.description)}</p>`:''}${t.status==='pending'&&t.counterparty_account_id===state.activeAccount?.id?`<div class="row" style="margin-top:10px"><button class="btn small tx-response" data-id="${t.id}" data-decision="approved">اعتماد</button><button class="btn small secondary tx-response" data-id="${t.id}" data-decision="change_requested">طلب تعديل</button><button class="btn small danger tx-response" data-id="${t.id}" data-decision="rejected">رفض</button></div>`:''}</div>`;
+}
+function renderTransactions(){
+ const list=state.filter==='all'?state.transactions:state.transactions.filter(t=>t.status===state.filter);
+ $('#transactionsList').innerHTML=list.map(transactionCard).join('')||'<div class="empty">لا توجد عمليات ضمن هذا التصنيف</div>';
+ $$('.tx-response').forEach(b=>b.onclick=()=>respondTx(b.dataset.id,b.dataset.decision));
+}
+async function respondTx(id,decision){
+ const note=decision==='approved'?'':prompt('اكتب ملاحظة مختصرة:')||'';
+ const {error}=await sb.rpc('respond_transaction',{p_transaction_id:id,p_decision:decision,p_note:note,p_destination_financial_account_id:null});
+ if(error)toast(error.message,'err');else{toast('تم تحديث العملية');await loadTransactions();renderAll()}
+}
+function renderConnections(){
+ const pending=state.connections.filter(c=>c.status==='pending'&&c.addressee_account_id===state.activeAccount?.id);
+ $('#requestBadge').textContent=pending.length;
+ $('#connectionRequests').innerHTML=pending.map(c=>`<div class="item row between"><div><b>${esc(c.requester.display_name)}</b><div class="tiny muted">@${esc(c.requester.username)}</div></div><div class="row"><button class="btn small connection-response" data-id="${c.id}" data-decision="accepted">قبول</button><button class="btn small danger connection-response" data-id="${c.id}" data-decision="rejected">رفض</button></div></div>`).join('')||'<div class="empty">لا طلبات معلقة</div>';
+ const accepted=state.connections.filter(c=>c.status==='accepted');
+ $('#connectionsList').innerHTML=accepted.map(c=>{const other=c.requester_account_id===state.activeAccount?.id?c.addressee:c.requester;return `<div class="item row between"><div class="row"><div class="avatar">${initials(other.display_name)}</div><div><b>${esc(other.display_name)}</b><div class="tiny muted">@${esc(other.username)} · ${other.account_type==='business'?'تجاري':'شخصي'}</div></div></div><button class="btn small secondary connected-profile" data-id="${other.id}">عرض</button></div>`}).join('')||'<div class="empty">لم تضف حسابات بعد</div>';
+ $$('.connection-response').forEach(b=>b.onclick=async()=>{const {error}=await sb.rpc('respond_connection_request',{p_connection_id:b.dataset.id,p_decision:b.dataset.decision});if(error)toast(error.message,'err');else{toast('تم الرد');await loadConnections();renderAll()}});
+ $$('.connected-profile').forEach(b=>b.onclick=()=>openAccountProfile(b.dataset.id));
+}
+async function openAccountProfile(id){
+ const {data:a}=await sb.from('accounts').select('*').eq('id',id).single();const {data:t}=await sb.rpc('get_account_trust_summary',{p_account_id:id});const trust=t?.[0];
+ modal(`<div class="modal-head"><h3>${esc(a.display_name)}</h3><button class="close">×</button></div><div class="row"><div class="avatar">${initials(a.display_name)}</div><div><b>@${esc(a.username)}</b><div class="tiny muted">${a.account_type==='business'?'حساب تجاري':'حساب شخصي'}</div></div></div><div class="divider"></div>${trust?`<div class="trust-card card"><div class="row between"><b>${esc(trust.activity_name_ar)}</b><span class="badge"><span class="dot" style="background:${trust.badge_color}"></span>${trust.evidence_confidence}</span></div><p class="tiny muted">${esc(trust.payment_commitment)} · ${esc(trust.debt_burden_label)}</p><div class="grid2"><div class="stat">دورات مكتملة<b>${trust.completed_obligations}</b></div><div class="stat">أطراف مستقلة<b>${trust.independent_counterparties}</b></div></div><p class="tiny muted">${esc(trust.disclaimer)}</p></div>`:''}${a.account_type==='business'?`<button class="btn" id="browseStoreModal" style="width:100%">عرض المنتجات</button>`:''}`);
+ if(a.account_type==='business')$('#browseStoreModal').onclick=()=>openStore(a.id);
+}
+function renderBusiness(){
+ $('#myBusinessAccounts').innerHTML=(state.businesses||[]).map(a=>`<div class="item"><b>${esc(a.display_name)}</b><div class="tiny muted">@${esc(a.username)} · ${esc(a.category||'نشاط تجاري')}</div><div class="row" style="margin-top:9px"><button class="btn small add-product" data-id="${a.id}">إضافة منتج</button><button class="btn small secondary view-products" data-id="${a.id}">المنتجات</button></div></div>`).join('')||'<div class="empty">لم تضف حسابًا تجاريًا</div>';
+ const stores=state.connections.filter(c=>c.status==='accepted').map(c=>c.requester_account_id===state.activeAccount?.id?c.addressee:c.requester).filter(a=>a.account_type==='business');
+ $('#storesList').innerHTML=stores.map(s=>`<div class="item row between"><div><b>${esc(s.display_name)}</b><div class="tiny muted">@${esc(s.username)} · ${esc(s.category||'متجر')}</div></div><button class="btn small store-open" data-id="${s.id}">دخول</button></div>`).join('')||'<div class="empty">لا متاجر مضافة</div>';
+ $('#ordersList').innerHTML=state.orders.map(o=>`<div class="item"><div class="row between"><b>طلب #${o.order_no}</b><span class="badge">${esc(o.status)}</span></div><div class="tiny muted">${esc(o.seller?.display_name||o.buyer?.display_name)} · ${money(o.final_total||o.estimated_total,o.currency_code)}</div></div>`).join('')||'<div class="empty">لا طلبات</div>';
+ $$('.add-product').forEach(b=>b.onclick=()=>openProductModal(b.dataset.id));
+ $$('.view-products,.store-open').forEach(b=>b.onclick=()=>openStore(b.dataset.id));
+}
+async function openStore(businessId){
+ const {data:account}=await sb.from('accounts').select('*').eq('id',businessId).single();
+ const {data:products}=await sb.from('products').select('*').eq('business_account_id',businessId).eq('is_available',true).order('sort_order');
+ let cart=[];
+ const draw=()=>{modal(`<div class="modal-head"><h3>${esc(account.display_name)}</h3><button class="close">×</button></div><div class="product-grid">${(products||[]).map(p=>`<button class="product product-add" data-id="${p.id}"><div class="ico">${esc(p.icon||'◈')}</div><b>${esc(p.name)}</b><div class="tiny muted">${money(p.price,p.currency_code)} / ${esc(p.unit)}</div></button>`).join('')||'<div class="empty">لا منتجات</div>'}</div><div class="divider"></div><div class="row between"><b>السلة: ${cart.reduce((n,x)=>n+x.qty,0)} عنصر</b><button id="submitOrderModal" class="btn" ${cart.length?'':'disabled'}>إرسال الطلب</button></div>`);$$('.product-add').forEach(btn=>btn.onclick=()=>{const p=products.find(x=>x.id===btn.dataset.id);const e=cart.find(x=>x.id===p.id);if(e)e.qty++;else cart.push({...p,qty:1});draw()});$('#submitOrderModal')?.addEventListener('click',async()=>{const items=cart.map(p=>({product_id:p.id,name:p.name,icon:p.icon,unit:p.unit,quantity:p.qty,unit_price:p.price,currency_code:p.currency_code}));const {error}=await sb.rpc('create_order_from_json',{p_buyer_account_id:state.activeAccount.id,p_seller_account_id:businessId,p_items:items,p_fulfillment_type:'pickup',p_requested_delivery_at:null,p_note:null});if(error)toast(error.message,'err');else{toast('تم إرسال الطلب');closeModal();await loadOrders();renderBusiness()}})};draw();
+}
+function openProductModal(id){modal(`<div class="modal-head"><h3>إضافة منتج</h3><button class="close">×</button></div><label class="label">اسم المنتج</label><input id="pName" class="input"><label class="label">أيقونة بسيطة</label><input id="pIcon" class="input" placeholder="🥫 أو 🥬"><div class="grid2"><div><label class="label">السعر</label><input id="pPrice" class="input" type="number"></div><div><label class="label">الوحدة</label><input id="pUnit" class="input" value="حبة"></div></div><button id="saveProduct" class="btn" style="width:100%">حفظ</button>`);$('#saveProduct').onclick=async()=>{const {error}=await sb.from('products').insert({business_account_id:id,name:$('#pName').value,icon:$('#pIcon').value||'◈',price:Number($('#pPrice').value||0),unit:$('#pUnit').value||'حبة',currency_code:'YER'});if(error)toast(error.message,'err');else{toast('تمت إضافة المنتج');closeModal();renderBusiness()}}}
+function renderNotificationsCount(){$('#notificationsCount').textContent=state.notifications.filter(n=>!n.is_read).length}
+function openNotificationsModal(){modal(`<div class="modal-head"><h3>الإشعارات</h3><button class="close">×</button></div><div class="list">${state.notifications.map(n=>`<div class="item"><b>${esc(n.title)}</b><p class="tiny muted">${esc(n.body||'')}</p></div>`).join('')||'<div class="empty">لا إشعارات</div>'}</div>`)}
+
+async function searchAccounts(){
+ const q=$('#searchInput').value.trim();if(!q)return;
+ const {data,error}=await sb.rpc('search_anis_accounts',{p_query:q,p_limit:20});
+ if(error)return toast(error.message,'err');
+ $('#searchResults').innerHTML=(data||[]).map(a=>`<div class="item"><div class="row between"><div class="row"><div class="avatar">${initials(a.display_name)}</div><div><b>${esc(a.display_name)}</b><div class="tiny muted">@${esc(a.username)} · ${a.account_type==='business'?'تجاري':'شخصي'}</div></div></div><button class="btn small send-connection" data-id="${a.account_id}">إضافة</button></div><div class="row wrap" style="margin-top:9px"><span class="badge"><span class="dot" style="background:${a.badge_color}"></span>${esc(a.activity_name_ar)}</span><span class="badge">${a.identity_verified?'✓ هوية موثقة':'هوية غير موثقة'}</span><span class="badge">ثقة: ${esc(a.evidence_confidence)}</span></div></div>`).join('')||'<div class="empty">لا نتائج</div>';
+ $$('.send-connection').forEach(b=>b.onclick=async()=>{const {error}=await sb.rpc('send_connection_request',{p_from_account_id:state.activeAccount.id,p_to_account_id:b.dataset.id});if(error)toast(error.message,'err');else{toast('تم إرسال طلب الإضافة');await loadConnections();renderConnections()}});
+}
+function openTransactionModal(prefill='paid'){
+ const draft=loadDraft('transaction')||{type:prefill,currency:'YER'};
+ const accepted=state.connections.filter(c=>c.status==='accepted').map(c=>c.requester_account_id===state.activeAccount.id?c.addressee:c.requester);
+ modal(`<div class="modal-head"><h3>إضافة عملية</h3><button class="close">×</button></div><div class="chips" id="opChips">${[['paid','دفعت'],['received','استلمت'],['ledger','قيد'],['sale','بعت'],['purchase','اشتريت']].map(([v,l])=>`<button class="chip ${draft.type===v?'active':''}" data-value="${v}">${l}</button>`).join('')}</div><label class="label">الطرف</label><select id="txParty" class="input"><option value="">اختر الحساب</option>${accepted.map(a=>`<option value="${a.id}" ${draft.party===a.id?'selected':''}>${esc(a.display_name)} — @${esc(a.username)}</option>`).join('')}</select><label class="label">المبلغ</label><input id="txAmount" class="input" type="number" value="${draft.amount||''}"><label class="label">العملة</label><div class="chips" id="currencyChips">${['YER','SAR','USD'].map(v=>`<button class="chip ${draft.currency===v?'active':''}" data-value="${v}">${v}</button>`).join('')}</div><label class="label">البيان</label><input id="txDesc" class="input" value="${esc(draft.description||'')}"><label class="label">تاريخ الاستحقاق (اختياري)</label><input id="txDue" class="input" type="date" value="${draft.due||''}"><button id="sendTx" class="btn" style="width:100%">مراجعة وإرسال</button>`);
+ let type=draft.type||prefill,currency=draft.currency||'YER';
+ $$('#opChips .chip').forEach(b=>b.onclick=()=>{type=b.dataset.value;$$('#opChips .chip').forEach(x=>x.classList.toggle('active',x===b));persist()});
+ $$('#currencyChips .chip').forEach(b=>b.onclick=()=>{currency=b.dataset.value;$$('#currencyChips .chip').forEach(x=>x.classList.toggle('active',x===b));persist()});
+ const persist=()=>saveDraft('transaction',{type,currency,party:$('#txParty').value,amount:$('#txAmount').value,description:$('#txDesc').value,due:$('#txDue').value});
+ ['txParty','txAmount','txDesc','txDue'].forEach(id=>$('#'+id).addEventListener('input',persist));
+ $('#sendTx').onclick=()=>{persist();const p=accepted.find(a=>a.id===$('#txParty').value);const amount=Number($('#txAmount').value);const description=$('#txDesc').value;const due=$('#txDue').value;if(!p||!amount)return toast('أكمل الطرف والمبلغ','err');modal(`<div class="modal-head"><h3>مراجعة العملية</h3><button class="close">×</button></div><div class="card"><p>ستسجل أنك <b>${operationAr(type)}</b> مع <b>${esc(p.display_name)}</b></p><h2>${money(amount,currency)}</h2><p class="muted">${esc($('#txDesc').value||'بدون بيان')}</p></div><div class="row"><button id="confirmTx" class="btn" style="flex:1">تأكيد وإرسال</button><button id="backTx" class="btn secondary">رجوع</button></div>`);$('#backTx').onclick=()=>openTransactionModal(type);$('#confirmTx').onclick=async()=>{const creatorPosition=type==='received'?'debtor':'creditor';const {error}=await sb.rpc('submit_transaction',{p_creator_account_id:state.activeAccount.id,p_counterparty_account_id:p.id,p_operation_type:type,p_creator_position:creatorPosition,p_amount:amount,p_currency_code:currency,p_description:description||null,p_project_id:null,p_due_at:due?new Date(due).toISOString():null,p_source_financial_account_id:null,p_destination_financial_account_id:null,p_offline_client_id:crypto.randomUUID()});if(error)toast(error.message,'err');else{clearDraft('transaction');toast('تم إرسال العملية');closeModal();await loadTransactions();renderAll()}}};
+}
+function openBusinessModal(){modal(`<div class="modal-head"><h3>إضافة حساب تجاري</h3><button class="close">×</button></div><label class="label">اسم النشاط</label><input id="bName" class="input"><label class="label">اليوزر</label><input id="bUsername" class="input" placeholder="4–20 حرفًا"><label class="label">نوع النشاط</label><div class="chips" id="businessTypes">${['بقالة','خضروات','مطعم','متجر','خدمات'].map((x,i)=>`<button class="chip ${i===0?'active':''}" data-value="${x}">${x}</button>`).join('')}</div><button id="saveBusiness" class="btn violet" style="width:100%">إنشاء الحساب التجاري</button>`);let category='بقالة';$$('#businessTypes .chip').forEach(b=>b.onclick=()=>{category=b.dataset.value;$$('#businessTypes .chip').forEach(x=>x.classList.toggle('active',x===b))});$('#saveBusiness').onclick=async()=>{const {error}=await sb.rpc('create_business_account',{p_display_name:$('#bName').value,p_username:$('#bUsername').value,p_category:category,p_default_currency:'YER'});if(error)toast(error.message,'err');else{toast('تم إنشاء الحساب التجاري');closeModal();await loadCore()}}}
+async function openWallets(){
+ const {data:wallets}=await sb.from('financial_accounts').select('*,financial_account_balances(*)').eq('owner_account_id',state.activeAccount.id).order('created_at');
+ modal(`<div class="modal-head"><h3>الأرصدة والحسابات</h3><button class="close">×</button></div><div class="list">${(wallets||[]).map(w=>`<button class="item wallet-open" data-id="${w.id}" style="color:inherit;text-align:right"><div class="row between"><div><b>${esc(w.name)}</b><div class="tiny muted">${w.account_kind==='cashbox'?'صندوق':w.account_kind==='bank'?'حساب بنكي':'محفظة إلكترونية'}</div></div><span>‹</span></div></button>`).join('')||'<div class="empty">لا حسابات</div>'}</div><button id="addWallet" class="btn" style="width:100%;margin-top:12px">+ إضافة حساب</button>`);
+ $$('.wallet-open').forEach(b=>b.onclick=()=>openWalletLedger(b.dataset.id,wallets.find(x=>x.id===b.dataset.id)));
+ $('#addWallet').onclick=()=>openAddWallet();
+}
+async function openWalletLedger(id,w){
+ const {data:tx}=await sb.from('transactions').select('*').or(`source_financial_account_id.eq.${id},destination_financial_account_id.eq.${id}`).order('created_at',{ascending:false});
+ modal(`<div class="modal-head"><h3>${esc(w.name)}</h3><button class="close">×</button></div><div class="grid3">${['YER','SAR','USD'].map(c=>{const b=w.financial_account_balances?.find(x=>x.currency_code===c);return `<div class="stat"><span class="tiny muted">${c}</span><b>${Number(b?.current_balance||0).toLocaleString('ar')}</b></div>`}).join('')}</div><div class="divider"></div><h3>كشف الحساب</h3><div class="list">${(tx||[]).map(t=>transactionCard(t)).join('')||'<div class="empty">لا حركات</div>'}</div>`);
+}
+function openAddWallet(){modal(`<div class="modal-head"><h3>إضافة حساب مالي</h3><button class="close">×</button></div><div class="chips" id="walletKinds"><button class="chip active" data-value="cashbox">الصندوق الشخصي</button><button class="chip" data-value="bank">حساب بنكي</button><button class="chip" data-value="wallet">محفظة إلكترونية</button></div><label class="label">الاسم</label><input id="walletName" class="input"><label class="label">المزود</label><div class="chips" id="providers">${['بنك القطيبي الإسلامي','بنك عدن الإسلامي','بنك الكريمي','بنك الشمول','شلن','عدن كاش'].map(x=>`<button class="chip" data-value="${x}">${x}</button>`).join('')}</div><button id="saveWallet" class="btn" style="width:100%">حفظ</button>`);let kind='cashbox',provider=null;$$('#walletKinds .chip').forEach(b=>b.onclick=()=>{kind=b.dataset.value;$$('#walletKinds .chip').forEach(x=>x.classList.toggle('active',x===b))});$$('#providers .chip').forEach(b=>b.onclick=()=>{provider=b.dataset.value;$$('#providers .chip').forEach(x=>x.classList.toggle('active',x===b))});$('#saveWallet').onclick=async()=>{const {data:w,error}=await sb.from('financial_accounts').insert({owner_account_id:state.activeAccount.id,account_kind:kind,name:$('#walletName').value||provider||'حساب جديد',provider_name:provider}).select().single();if(error)toast(error.message,'err');else{await sb.from('financial_account_balances').insert(['YER','SAR','USD'].map(c=>({financial_account_id:w.id,currency_code:c,opening_balance:0,current_balance:0})));toast('تمت الإضافة');openWallets()}}}
+
+function navigate(name){$$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name));$$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.nav===name));if(name==='admin')loadAdmin()}
+function subscribeRealtime(){sb.removeAllChannels();sb.channel('anis-live').on('postgres_changes',{event:'*',schema:'public',table:'notifications',filter:`recipient_user_id=eq.${state.user.id}`},async()=>{await loadNotifications();renderNotificationsCount()}).on('postgres_changes',{event:'*',schema:'public',table:'connections'},async()=>{await loadConnections();renderConnections()}).on('postgres_changes',{event:'*',schema:'public',table:'transactions'},async()=>{await loadTransactions();renderAll()}).subscribe()}
+
+$$('[data-auth-tab]').forEach(b=>b.onclick=()=>{$$('[data-auth-tab]').forEach(x=>x.classList.toggle('active',x===b));$('#loginForm').classList.toggle('hidden',b.dataset.authTab!=='login');$('#signupForm').classList.toggle('hidden',b.dataset.authTab!=='signup')})
+$('#loginForm').onsubmit=async e=>{e.preventDefault();const {error}=await sb.auth.signInWithPassword({email:$('#loginEmail').value,password:$('#loginPassword').value});if(error)toast(error.message,'err')}
+$('#signupForm').onsubmit=async e=>{e.preventDefault();const username=$('#signupUsername').value.trim().replace(/^@/,'');if(!/^[a-z0-9][a-z0-9._]{2,18}[a-z0-9]$/i.test(username))return toast('اليوزر يجب أن يكون 4–20 حرفًا','err');const {error}=await sb.auth.signUp({email:$('#signupEmail').value,password:$('#signupPassword').value,options:{data:{full_name:$('#signupName').value,username:username.toLowerCase(),default_currency:'YER'}}});if(error)toast(error.message,'err');else toast('تم إنشاء الحساب. تحقق من بريدك إذا كان التأكيد مفعّلًا.')}
+$('#accountSwitch').onchange=async e=>{state.activeAccount=state.accounts.find(a=>a.id===e.target.value);localStorage.setItem('anis_active_account',e.target.value);renderHeader();await Promise.all([loadConnections(),loadTransactions(),loadOrders(),renderTrust()]);renderAll()}
+$$('[data-nav]').forEach(b=>b.onclick=()=>navigate(b.dataset.nav));
+$('#quickAdd').onclick=()=>openTransactionModal('paid');$('#transactionAddTop').onclick=()=>openTransactionModal('paid');$$('.quick-type').forEach(b=>b.onclick=()=>openTransactionModal(b.dataset.type));
+$('#openSearchBtn').onclick=()=>navigate('people');$('#searchBtn').onclick=searchAccounts;$('#searchInput').onkeydown=e=>{if(e.key==='Enter')searchAccounts()};
+$('#openWalletBtn').onclick=openWallets;$('#openWalletsMore').onclick=openWallets;$('#openNotifications').onclick=openNotificationsModal;
+$('#openBusinessBtn').onclick=openBusinessModal;$('#createBusinessBtn').onclick=openBusinessModal;
+$('#refreshTrustBtn').onclick=async()=>{const {error}=await sb.rpc('refresh_trust_metrics',{p_account_id:state.activeAccount.id});if(error)toast(error.message,'err');else{toast('تم تحديث المؤشرات');renderTrust()}};
+$('#logoutBtn').onclick=()=>sb.auth.signOut();
+$('#transactionFilters').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;state.filter=b.dataset.filter;$$('#transactionFilters .chip').forEach(x=>x.classList.toggle('active',x===b));renderTransactions()};
+$('#publishAnnouncementBtn').onclick=async()=>{const {error}=await sb.rpc('admin_publish_announcement',{p_title:$('#announcementTitle').value,p_body:$('#announcementBody').value,p_audience:'all'});if(error)toast(error.message,'err');else{toast('تم نشر التعميم');$('#announcementTitle').value='';$('#announcementBody').value=''}};
+boot();
+</script>
+</body>
+</html>

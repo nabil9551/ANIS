@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071526">
-<title>أنيس</title>
+<title>أنيس — 5.1</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -28,7 +28,7 @@ main{padding:16px}.page{display:none}.page.active{display:block}h1,h2,h3,p{margi
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .stat{padding:12px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.035)}.stat b{font-size:18px;display:block;margin-top:4px}
 .btn{border:0;border-radius:13px;padding:12px 15px;background:linear-gradient(135deg,var(--teal),#25c89b);color:#041d24;font-weight:800}.btn.secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--line)}.btn.ghost{background:transparent;color:var(--text);border:1px dashed var(--line)}.btn.danger{background:rgba(255,107,107,.13);color:#ffb0b0;border:1px solid rgba(255,107,107,.2)}.btn.small{padding:8px 11px;font-size:12px}.btn.warn{background:rgba(246,185,74,.14);color:#ffd88c;border:1px solid rgba(246,185,74,.25)}
-.input,.select,textarea{width:100%;border:1px solid var(--line);background:#081c2d;color:var(--text);padding:13px;border-radius:13px;outline:none;margin:6px 0 12px}.input:focus,.select:focus,textarea:focus{border-color:var(--teal)}textarea{min-height:90px;resize:vertical}
+.input,.select,textarea{width:100%;min-height:48px;border:1px solid var(--line);background:#081c2d;color:var(--text);padding:12px 13px;border-radius:13px;outline:none;margin:6px 0 12px;font-size:16px;line-height:1.25}.select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#9fb2c1 50%),linear-gradient(135deg,#9fb2c1 50%,transparent 50%);background-position:18px 20px,12px 20px;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-left:34px}.input:focus,.select:focus,textarea:focus{border-color:var(--teal)}textarea{min-height:90px;resize:vertical}
 .label{font-size:13px;color:#c7d6df;font-weight:700}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 13px}.chip{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);padding:9px 12px;border-radius:999px}.chip.active{background:rgba(22,184,178,.18);border-color:var(--teal);color:#a9fff2}.chip.icon{min-width:72px;text-align:center}
 .list{display:flex;flex-direction:column;gap:9px}.item{border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:15px;padding:12px}.item.clickable{cursor:pointer}.item:hover{background:rgba(255,255,255,.05)}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;font-size:11px;background:rgba(255,255,255,.07);border:1px solid var(--line)}.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--teal),#3fc1ba);color:#072132;font-weight:900}
@@ -36,10 +36,10 @@ main{padding:16px}.page{display:none}.page.active{display:block}h1,h2,h3,p{margi
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(580px,100%);z-index:30;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(6,19,32,.95);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom))}.nav button{border:0;background:none;color:var(--muted);padding:7px 2px;font-size:11px}.nav button span{display:block;font-size:21px;margin-bottom:2px}.nav button.active{color:var(--mint)}
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:grid;align-items:end;justify-items:center;padding:16px}.modal{width:min(580px,100%);max-height:92vh;overflow:auto;background:#0a2135;border:1px solid var(--line);border-radius:24px 24px 18px 18px;padding:18px;box-shadow:var(--shadow)}.modal-head{display:flex;align-items:center;justify-content:space-between;position:sticky;top:-18px;background:#0a2135;padding:10px 0;z-index:3}.close{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;font-size:20px}
 .toast{position:fixed;z-index:200;bottom:100px;left:50%;transform:translateX(-50%);width:min(90%,480px);padding:13px 16px;border-radius:14px;background:#132e45;color:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
-.owner-mark{display:inline-flex;align-items:center;gap:8px;color:#c9cdd7;font-size:11px;margin-top:18px}.chev{color:var(--teal);font-weight:900;font-size:22px}.owner-rights{font-size:11px;color:#8e9cab;margin-top:5px}.account-switch{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);padding:10px 11px;border-radius:12px;max-width:210px;min-width:170px}
+.owner-mark{display:inline-flex;align-items:center;gap:8px;color:#c9cdd7;font-size:11px;margin-top:18px}.chev{color:var(--teal);font-weight:900;font-size:22px}.owner-rights{font-size:11px;color:#8e9cab;margin-top:5px}.account-switch{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);padding:10px 34px 10px 11px;border-radius:12px;width:min(210px,46vw);min-height:46px;font-size:14px;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#9fb2c1 50%),linear-gradient(135deg,#9fb2c1 50%,transparent 50%);background-position:20px 19px,14px 19px;background-size:6px 6px,6px 6px;background-repeat:no-repeat}
 .notice{background:rgba(246,185,74,.13);border-color:rgba(246,185,74,.24)}.pending-screen{padding:22px;text-align:center}.pill{border-radius:999px;padding:6px 10px;border:1px solid var(--line);background:rgba(255,255,255,.05)}
 .report-wrap{display:flex;flex-direction:column;gap:12px}.report-table{width:100%;border-collapse:collapse;font-size:13px}.report-table th,.report-table td{border:1px solid rgba(255,255,255,.11);padding:8px;text-align:right}.report-table th{background:rgba(255,255,255,.05)}.neg{color:#ff8c8c}.pos{color:#eff7fb}.good{color:#8cffcf}.report-card{border:1px solid var(--line);border-radius:18px;padding:14px;background:rgba(255,255,255,.03)}
-.saved-identities button{width:100%;text-align:right}.qrbox{background:#fff;padding:12px;border-radius:16px;display:inline-block}
+.saved-identities button{width:100%;text-align:right}.qrbox{background:#fff;padding:12px;border-radius:16px;display:inline-block}.session-loading{position:fixed;inset:0;z-index:500;background:rgba(6,18,31,.96);display:grid;place-items:center;text-align:center;padding:24px}.session-loading .card{width:min(360px,92vw)}
 @media print{
   body{background:#fff;color:#111}.print-hidden,.nav,.topbar,.toast,.modal-backdrop{display:none!important}.print-cover,.print-page{page-break-after:always;padding:14mm;color:#111}.print-page:last-child{page-break-after:auto}.print-head{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #0b2238;padding-bottom:8px;margin-bottom:10px}.print-brandmark{width:48px;height:48px;border-radius:14px;background:#0b2238;position:relative}.print-brandmark:before,.print-brandmark:after{content:"";position:absolute;border-radius:100% 0 100% 0;transform:rotate(-28deg)}.print-brandmark:before{width:32px;height:8px;background:#fff;right:7px;top:12px}.print-brandmark:after{width:24px;height:7px;background:#31d7c2;right:10px;top:26px}.print-table{width:100%;border-collapse:collapse;font-size:11px}.print-table th,.print-table td{border:1px solid #aab4c0;padding:6px}.print-footer{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;color:#445}
 }
@@ -84,7 +84,7 @@ main{padding:16px}.page{display:none}.page.active{display:block}h1,h2,h3,p{margi
     </div>
     <div style="text-align:center">
       <div class="owner-mark">A Product by <span class="chev">›</span></div>
-      <div class="owner-rights">© 2026 All Rights Reserved</div>
+      <div class="owner-rights">© 2026 All Rights Reserved · v5.1</div>
     </div>
   </div>
 </div>
@@ -220,6 +220,7 @@ main{padding:16px}.page{display:none}.page.active{display:block}h1,h2,h3,p{margi
 </nav>
 </div>
 
+<div id="sessionLoading" class="session-loading hidden"><div class="card"><div class="brand" style="justify-content:center"><div class="brandmark"></div><div><strong>أنيس</strong><small>جارٍ تحميل الحساب بأمان…</small></div></div></div></div>
 <div id="modalRoot"></div>
 <div id="toast" class="toast hidden"></div>
 <div id="printMount" class="hidden"></div>
@@ -230,7 +231,7 @@ const SUPABASE_KEY='sb_publishable_P8_BlK8B4CVyy9dbo_4SSg_q1er30hB';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const state={session:null,user:null,profile:null,accounts:[],projects:[],connections:[],transactions:[],notifications:[],wallets:[],ledgerAccounts:[],activeAccount:null,isAdmin:false,filter:'all',reportType:'statement',reportCurrency:'ALL',reportStatus:'all',reportData:null};
+const state={session:null,user:null,profile:null,accounts:[],projects:[],connections:[],transactions:[],notifications:[],wallets:[],ledgerAccounts:[],activeAccount:null,isAdmin:false,filter:'all',reportType:'statement',reportCurrency:'ALL',reportStatus:'all',reportData:null,authGeneration:0,loading:false};
 
 function toast(msg,kind='ok'){const el=$('#toast');el.textContent=msg;el.style.borderColor=kind==='err'?'rgba(255,107,107,.5)':'rgba(88,213,181,.35)';el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),3500)}
 function modal(html){$('#modalRoot').innerHTML=`<div class="modal-backdrop"><div class="modal">${html}</div></div>`;$('#modalRoot .close')?.addEventListener('click',closeModal)}
@@ -244,6 +245,13 @@ function statusAr(s){return ({draft:'مسودة',pending:'بانتظار الا�
 function operationAr(s){return ({paid:'دفعت',received:'استلمت',ledger:'قيد',sale:'بيع',purchase:'شراء',internal_transfer:'تحويل',expense:'مصروف',settlement:'سداد',opening_balance:'رصيد افتتاحي'})[s]||s}
 function saveLocal(k,v){localStorage.setItem(k,JSON.stringify(v))}
 function readLocal(k,def=null){try{return JSON.parse(localStorage.getItem(k) || 'null') ?? def}catch{return def}}
+function setSessionLoading(on){state.loading=!!on;$('#sessionLoading').classList.toggle('hidden',!on)}
+function resetRuntimeState(){
+  state.session=null;state.user=null;state.profile=null;state.accounts=[];state.projects=[];state.connections=[];state.transactions=[];state.notifications=[];state.wallets=[];state.ledgerAccounts=[];state.activeAccount=null;state.isAdmin=false;state.filter='all';state.reportData=null;
+  $('#adminEntry')?.classList.add('hidden');
+  $('#accountSwitch').innerHTML='';
+  $('#activeAccountLabel').textContent='—';
+}
 function draftKey(name){return `anis_v5_${state.user?.id||'guest'}_${state.activeAccount?.id||'x'}_${name}`}
 function saveDraft(name,v){saveLocal(draftKey(name),v)}
 function loadDraft(name){return readLocal(draftKey(name),null)}
@@ -255,31 +263,97 @@ function activeAccountType(){return state.activeAccount?.account_type || 'person
 function systemLedgerOptions(){return state.ledgerAccounts.filter(x=>x.is_active).filter(x=>x.account_scope==='all' || (x.account_scope==='business_only'&&activeAccountType()==='business') || (x.account_scope==='personal_only'&&activeAccountType()==='personal'))}
 function financialOptions(){return state.wallets||[]}
 function findCounterpartyConnection(id){return state.connections.find(c=>c.requester_account_id===id || c.addressee_account_id===id)}
-function acceptedConnections(){return state.connections.filter(c=>c.status==='accepted').map(c=>c.requester_account_id===state.activeAccount.id?c.addressee:c.requester).filter(Boolean)}
+function acceptedConnections(){if(!state.activeAccount)return[];return state.connections.filter(c=>c.status==='accepted').map(c=>c.requester_account_id===state.activeAccount.id?c.addressee:c.requester).filter(Boolean)}
 function inferPayload(tx){if(tx.entry_payload && Object.keys(tx.entry_payload).length) return tx.entry_payload; const p={debit:{type:'counterparty',name:tx.counterparty?.display_name||'الطرف الآخر',id:tx.counterparty_account_id},credit:{type:'financial',name:'الصندوق الشخصي',id:tx.source_financial_account_id||null}}; if(tx.operation_type==='received'){p.debit={type:'financial',name:'الصندوق الشخصي',id:tx.destination_financial_account_id||null};p.credit={type:'counterparty',name:tx.counterparty?.display_name||'الطرف الآخر',id:tx.counterparty_account_id};} if(tx.operation_type==='purchase'){p.debit={type:'ledger',code:'purchases',name:'المشتريات'};p.credit={type:'counterparty',name:tx.counterparty?.display_name||'الطرف الآخر',id:tx.counterparty_account_id};} if(tx.operation_type==='sale'){p.debit={type:'counterparty',name:tx.counterparty?.display_name||'الطرف الآخر',id:tx.counterparty_account_id};p.credit={type:'ledger',code:'inventory',name:'حساب البضاعة'};} if(tx.operation_type==='ledger'){p.debit={type:'counterparty',name:tx.counterparty?.display_name||'الطرف الآخر',id:tx.counterparty_account_id};p.credit={type:'ledger',code:'general_intermediary',name:'الوسيط العام'};} return p}
 function targetLabel(target){return target?.name || '—'}
 function targetKey(target){return `${target?.type||'x'}:${target?.id||target?.code||target?.name||'x'}`}
 function getTxOther(tx){return tx.creator_account_id===state.activeAccount?.id ? tx.counterparty : tx.creator}
 
-async function boot(){renderSavedIdentities(); const {data:{session}}=await sb.auth.getSession(); if(session) await enterApp(session); else showAuth(); sb.auth.onAuthStateChange(async(_e,s)=>{if(s){await enterApp(s)} else showAuth()})}
-function showAuth(){state.session=null;state.user=null;state.profile=null;$('#authView').classList.remove('hidden');$('#appView').classList.add('hidden');renderSavedIdentities()}
-async function enterApp(session){state.session=session;state.user=session.user;$('#authView').classList.add('hidden');$('#appView').classList.remove('hidden');await loadCore();subscribeRealtime();}
-
-async function loadCore(){
-  const {data:profileData}=await sb.rpc('get_my_profile_v5');
-  state.profile=(profileData&&profileData[0]) || null;
-  let {data:accounts,error}=await sb.from('accounts').select('*').eq('owner_user_id',state.user.id).order('is_primary',{ascending:false});
-  if(error) toast(error.message,'err');
-  state.accounts=accounts||[];
-  state.activeAccount=state.accounts.find(a=>a.id===localStorage.getItem('anis_active_account')) || state.accounts[0] || null;
-  const {data:admin}=await sb.rpc('get_my_admin_status'); state.isAdmin=!!(admin?.[0]?.is_owner || admin?.[0]?.is_admin);
-  if(state.activeAccount){
-    await sb.rpc('ensure_default_ledger_accounts',{p_owner_account_id:state.activeAccount.id}).catch(()=>null);
+async function boot(){
+  renderSavedIdentities();
+  const {data:{session}}=await sb.auth.getSession();
+  if(session) await enterApp(session,'boot'); else showAuth();
+  sb.auth.onAuthStateChange(async(event,session)=>{
+    if(event==='SIGNED_OUT' || !session){showAuth();return;}
+    if(event==='SIGNED_IN' || event==='USER_UPDATED' || event==='TOKEN_REFRESHED'){
+      if(state.session?.access_token===session.access_token && state.user?.id===session.user.id && state.accounts.length) return;
+      await enterApp(session,event);
+    }
+  });
+}
+function showAuth(){
+  state.authGeneration++;
+  resetRuntimeState();
+  clearEphemeralUI();
+  setSessionLoading(false);
+  $('#authView').classList.remove('hidden');
+  $('#appView').classList.add('hidden');
+  renderSavedIdentities();
+}
+async function enterApp(session,source='manual'){
+  const generation=++state.authGeneration;
+  resetRuntimeState();
+  state.session=session;state.user=session.user;
+  setSessionLoading(true);
+  $('#authView').classList.add('hidden');
+  $('#appView').classList.remove('hidden');
+  try{
+    const ok=await loadCore(generation);
+    if(!ok || generation!==state.authGeneration) return;
+    subscribeRealtime();
+  }catch(err){
+    console.error('ANIS session load failed',err);
+    toast('تعذر تحميل بيانات الحساب. تم تسجيل الخروج لحماية الجلسة.','err');
+    await sb.auth.signOut({scope:'local'}).catch(()=>null);
+    showAuth();
+  }finally{
+    if(generation===state.authGeneration) setSessionLoading(false);
   }
+}
+
+async function loadCore(generation){
+  if(!state.user?.id) throw new Error('Missing authenticated user');
+  state.isAdmin=false;
+  $('#adminEntry').classList.add('hidden');
+
+  const [{data:profileData,error:profileError},{data:adminData,error:adminError},{data:accounts,error:accountsError}] = await Promise.all([
+    sb.rpc('get_my_profile_v5'),
+    sb.rpc('get_my_admin_status'),
+    sb.from('accounts').select('*').eq('owner_user_id',state.user.id).order('is_primary',{ascending:false})
+  ]);
+  if(generation!==state.authGeneration) return false;
+  if(profileError) throw profileError;
+  if(adminError) throw adminError;
+  if(accountsError) throw accountsError;
+
+  state.profile=(profileData&&profileData[0])||null;
+  state.isAdmin=!!(adminData?.[0]?.is_owner || adminData?.[0]?.is_admin);
+  state.accounts=accounts||[];
+
+  if(!state.profile && !state.isAdmin) throw new Error('No application profile for this user');
+
+  const storedId=localStorage.getItem(`anis_active_account_${state.user.id}`);
+  state.activeAccount=state.accounts.find(a=>a.id===storedId) || state.accounts.find(a=>a.is_primary) || state.accounts[0] || null;
+
+  if(state.activeAccount){
+    await sb.rpc('ensure_default_ledger_accounts',{p_owner_account_id:state.activeAccount.id});
+    await Promise.all([loadProjects(),loadConnections(),loadTransactions(),loadNotifications(),loadWallets(),loadLedgerAccounts()]);
+    await renderTrust();
+  }else{
+    state.projects=[];state.connections=[];state.transactions=[];state.notifications=[];state.wallets=[];state.ledgerAccounts=[];
+    $('#trustHome').innerHTML='<div class="empty">لا يوجد حساب مالي مرتبط بهذه العضوية.</div>';
+  }
+
   renderHeader();
-  await Promise.all([loadProjects(),loadConnections(),loadTransactions(),loadNotifications(),loadWallets(),loadLedgerAccounts(),loadAdmin()]);
-  await renderTrust();
+  await loadAdmin();
   renderAll();
+
+  if(state.isAdmin && !state.activeAccount){
+    navigate('admin');
+  }else{
+    navigate('home');
+  }
+  return true;
 }
 async function loadProjects(){ if(!state.activeAccount){state.projects=[]; return;} const {data}=await sb.from('projects').select('*').eq('owner_account_id',state.activeAccount.id).order('is_default',{ascending:false}); state.projects=data||[]; }
 async function loadConnections(){ if(!state.activeAccount){state.connections=[]; return;} const id=state.activeAccount.id; const {data}=await sb.from('connections').select('*,requester:accounts!connections_requester_account_id_fkey(id,display_name,username,account_type,category),addressee:accounts!connections_addressee_account_id_fkey(id,display_name,username,account_type,category)').or(`requester_account_id.eq.${id},addressee_account_id.eq.${id}`).order('requested_at',{ascending:false}); state.connections=data||[]; }
@@ -293,7 +367,9 @@ function renderHeader(){
   $('#welcomeSub').textContent=state.profile?.phone_number ? `دخول عبر ${state.profile.phone_number}` : 'إدارة تعاملاتك بسلاسة';
   $('#activeAccountLabel').textContent=state.activeAccount?`@${state.activeAccount.username}`:'لا يوجد حساب';
   $('#accountSwitch').innerHTML=state.accounts.map(a=>`<option value="${a.id}" ${a.id===state.activeAccount?.id?'selected':''}>${esc(a.display_name)} — @${esc(a.username)}</option>`).join('');
-  $('#adminEntry').classList.toggle('hidden',!state.isAdmin);
+  $('#accountSwitch').disabled=state.accounts.length<2;
+  $('#accountSwitch').classList.toggle('hidden',state.accounts.length===0);
+  $('#adminEntry').classList.toggle('hidden',state.isAdmin!==true);
   const pBox=$('#pendingApprovalBox');
   const pending = state.profile && state.profile.approval_status!=='approved' && !state.isAdmin;
   pBox.classList.toggle('hidden',!pending);
@@ -319,8 +395,15 @@ async function loadAdmin(){
   $$('.admin-suspend').forEach(b=>b.onclick=async()=>{const {error}=await sb.rpc('admin_set_account_suspension',{p_account_id:b.dataset.id,p_reason:'مراجعة إدارية',p_suspend:b.dataset.suspended!=='true'}); if(error) toast(error.message,'err'); else {toast('تم تحديث الحساب'); await loadAdmin();}});
 }
 
-function renderAll(){renderHome();renderConnections();renderTransactions();renderBusinessArea();renderReportSelectors(); renderNotificationsCount();}
-function renderHome(){const pending=state.transactions.filter(t=>t.status==='pending'&&t.counterparty_account_id===state.activeAccount?.id).length; $('#pendingCount').textContent=pending; $('#connectionsCount').textContent=state.connections.filter(c=>c.status==='accepted').length; $('#recentTransactions').innerHTML=state.transactions.slice(0,5).map(transactionCard).join('')||'<div class="empty">لا عمليات بعد</div>';}
+function navigate(name){
+  if(name==='admin' && !state.isAdmin) name='home';
+  $$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name));
+  $$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.nav===name));
+  if(name==='admin' && state.isAdmin) loadAdmin();
+  if(name==='reports') renderReportPreview();
+}
+function renderAll(){renderHome();renderConnections();renderTransactions();renderBusinessArea();renderReportSelectors();renderNotificationsCount();}
+function renderHome(){const pending=state.transactions.filter(t=>t.status==='pending'&&t.counterparty_account_id===state.activeAccount?.id).length;$('#pendingCount').textContent=pending;$('#connectionsCount').textContent=state.connections.filter(c=>c.status==='accepted').length;$('#recentTransactions').innerHTML=state.activeAccount?(state.transactions.slice(0,5).map(transactionCard).join('')||'<div class="empty">لا عمليات بعد</div>'):'<div class="empty">لا يوجد حساب نشط</div>';}
 function transactionCard(t){const other=getTxOther(t); const payload=inferPayload(t); return `<div class="item"><div class="row between wrap"><div><b>${operationAr(t.operation_type)} · ${money(t.amount,t.currency_code)}</b><div class="tiny muted">${esc(other?.display_name||'عملية داخلية')} · ${formatDate(t.created_at)}</div></div><span class="badge ${t.status==='approved'||t.status==='settled'?'good':''}">${statusAr(t.status)}</span></div><div class="tiny muted" style="margin-top:8px">مدين: ${esc(targetLabel(payload.debit))} | دائن: ${esc(targetLabel(payload.credit))}</div>${t.description?`<p class="tiny muted" style="margin:8px 0 0">${esc(t.description)}</p>`:''}${t.status==='pending'&&t.counterparty_account_id===state.activeAccount?.id?`<div class="row wrap" style="margin-top:10px"><button class="btn small tx-response" data-id="${t.id}" data-decision="approved">اعتماد</button><button class="btn small secondary tx-response" data-id="${t.id}" data-decision="change_requested">طلب تعديل</button><button class="btn small danger tx-response" data-id="${t.id}" data-decision="rejected">رفض</button></div>`:''}</div>`}
 function renderTransactions(){let list=state.transactions.filter(t=>state.filter==='all'||t.status===state.filter); $('#transactionsList').innerHTML=list.map(transactionCard).join('')||'<div class="empty">لا عمليات</div>'; $$('.tx-response').forEach(b=>b.onclick=()=>respondTx(b.dataset.id,b.dataset.decision));}
 function renderConnections(){const requests=state.connections.filter(c=>c.status==='pending'&&c.addressee_account_id===state.activeAccount?.id); $('#requestBadge').textContent=requests.length; $('#connectionRequests').innerHTML=requests.map(c=>`<div class="item"><div class="row between"><div><b>${esc(c.requester.display_name)}</b><div class="tiny muted">@${esc(c.requester.username)}</div></div><div class="row"><button class="btn small req-action" data-id="${c.id}" data-status="accepted">قبول</button><button class="btn small danger req-action" data-id="${c.id}" data-status="rejected">رفض</button></div></div></div>`).join('')||'<div class="empty">لا طلبات</div>'; $$('.req-action').forEach(b=>b.onclick=()=>updateConnection(b.dataset.id,b.dataset.status)); const accepted=state.connections.filter(c=>c.status==='accepted'); $('#connectionsList').innerHTML=accepted.map(c=>{const a=c.requester_account_id===state.activeAccount.id?c.addressee:c.requester; return `<div class="item row between clickable open-connection" data-id="${a.id}"><div class="row"><div class="avatar">${esc(initials(a.display_name))}</div><div><b>${esc(a.display_name)}</b><div class="tiny muted">@${esc(a.username)} · ${a.account_type==='business'?'تجاري':'شخصي'}</div></div></div><span>‹</span></div>`}).join('')||'<div class="empty">لا حسابات مضافة</div>'; $$('.open-connection').forEach(b=>b.onclick=()=>openAccountProfile(b.dataset.id));}
@@ -415,13 +498,13 @@ function generateReport(){ const filters=collectReportFilters(); state.reportDat
 function subscribeRealtime(){ sb.removeAllChannels(); sb.channel('anis-live').on('postgres_changes',{event:'*',schema:'public',table:'notifications',filter:`recipient_user_id=eq.${state.user.id}`},async()=>{await loadNotifications(); renderNotificationsCount();}).on('postgres_changes',{event:'*',schema:'public',table:'connections'},async()=>{await loadConnections(); renderConnections();}).on('postgres_changes',{event:'*',schema:'public',table:'transactions'},async()=>{await loadTransactions(); renderHome(); renderTransactions();}).subscribe(); }
 
 $$('[data-auth-tab]').forEach(b=>b.onclick=()=>{$$('[data-auth-tab]').forEach(x=>x.classList.toggle('active',x===b)); $('#loginForm').classList.toggle('hidden',b.dataset.authTab!=='login'); $('#signupForm').classList.toggle('hidden',b.dataset.authTab!=='signup')});
-$('#loginForm').onsubmit=async e=>{ e.preventDefault(); const phone=normalizePhone($('#loginPhone').value); const {data:resolved,error:resolveError}=await sb.rpc('resolve_login_email',{p_phone:phone}); if(resolveError) return toast('تعذر التحقق من رقم الدخول','err'); const email=resolved; if(!email) return toast('رقم الجوال غير مسجل','err'); const {error}=await sb.auth.signInWithPassword({email,password:$('#loginPassword').value}); if(error) return toast('رقم الجوال أو كلمة المرور غير صحيحة','err'); if($('#rememberMe').checked) rememberIdentity({phone,name:phone}); clearEphemeralUI(); };
+$('#loginForm').onsubmit=async e=>{e.preventDefault();const phone=normalizePhone($('#loginPhone').value);setSessionLoading(true);try{await sb.auth.signOut({scope:'local'}).catch(()=>null);resetRuntimeState();const {data:resolved,error:resolveError}=await sb.rpc('resolve_login_email',{p_phone:phone});if(resolveError)throw resolveError;const email=resolved;if(!email)throw new Error('رقم الجوال غير مسجل');const {data,error}=await sb.auth.signInWithPassword({email,password:$('#loginPassword').value});if(error)throw error;if(!data.session)throw new Error('لم يتم إنشاء جلسة دخول');if($('#rememberMe').checked)rememberIdentity({phone,name:phone});clearEphemeralUI();await enterApp(data.session,'login-submit');}catch(err){console.error(err);setSessionLoading(false);toast(err.message==='رقم الجوال غير مسجل'?err.message:'رقم الجوال أو كلمة المرور غير صحيحة','err');showAuth();}};
 $('#signupForm').onsubmit=async e=>{ e.preventDefault(); const username=$('#signupUsername').value.trim().replace(/^@/,'').toLowerCase(); if(!/^[a-z0-9][a-z0-9._]{2,18}[a-z0-9]$/i.test(username)) return toast('اليوزر يجب أن يكون 4–20 حرفًا','err'); const phone=normalizePhone($('#signupPhone').value); const {data:existing}=await sb.rpc('resolve_login_email',{p_phone:phone}); if(existing) return toast('رقم الجوال مستخدم مسبقًا','err'); const email=phoneToEmail(phone); const {data,error}=await sb.auth.signUp({email,password:$('#signupPassword').value,options:{data:{full_name:$('#signupName').value,username,default_currency:'YER',phone_number:phone}}}); if(error) return toast(error.message,'err'); if(data.session){ await sb.rpc('register_my_phone_alias',{p_phone:phone}); await sb.from('profiles').update({approval_status:'pending'}).eq('user_id',data.user.id); } if($('#rememberMe').checked) rememberIdentity({phone,name:$('#signupName').value}); toast(data.session?'تم إنشاء الحساب وهو بانتظار اعتماد الإدارة.':'تم إنشاء الحساب. يلزم تعطيل تأكيد البريد حتى يدخل مباشرة.'); };
-$('#accountSwitch').onchange=async e=>{state.activeAccount=state.accounts.find(a=>a.id===e.target.value); localStorage.setItem('anis_active_account',e.target.value); await sb.rpc('ensure_default_ledger_accounts',{p_owner_account_id:state.activeAccount.id}).catch(()=>null); clearEphemeralUI(); await Promise.all([loadProjects(),loadConnections(),loadTransactions(),loadWallets(),loadLedgerAccounts()]); renderHeader(); await renderTrust(); renderAll(); };
+$('#accountSwitch').onchange=async e=>{const next=state.accounts.find(a=>a.id===e.target.value);if(!next)return;setSessionLoading(true);try{state.activeAccount=next;localStorage.setItem(`anis_active_account_${state.user.id}`,next.id);clearEphemeralUI();await sb.rpc('ensure_default_ledger_accounts',{p_owner_account_id:next.id});await Promise.all([loadProjects(),loadConnections(),loadTransactions(),loadWallets(),loadLedgerAccounts()]);renderHeader();await renderTrust();renderAll();navigate('home');}catch(err){console.error(err);toast('تعذر تبديل الحساب','err')}finally{setSessionLoading(false)}};
 $$('[data-nav]').forEach(b=>b.onclick=()=>{const n=b.dataset.nav; $$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+n)); $$('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.nav===n)); if(n==='admin') loadAdmin(); if(n==='reports') renderReportPreview(); });
 $('#quickAdd').onclick=()=>openTransactionModal('paid'); $('#transactionAddTop').onclick=()=>openTransactionModal('paid'); $$('.quick-type').forEach(b=>b.onclick=()=>openTransactionModal(b.dataset.type)); $('#openSearchBtn').onclick=()=>$$('[data-nav="people"]')[0].click(); $('#openReportsBtn').onclick=()=>$$('[data-nav="reports"]')[0].click();
 $('#searchBtn').onclick=searchAccounts; $('#searchInput').onkeydown=e=>{if(e.key==='Enter') searchAccounts()};
-$('#openWalletBtn').onclick=openWallets; $('#openWalletsMore').onclick=openWallets; $('#openNotifications').onclick=openNotificationsModal; $('#openBusinessBtn').onclick=openBusinessModal; $('#createBusinessBtn').onclick=openBusinessModal; $('#addLedgerAccountBtn').onclick=openAddLedgerAccount; $('#refreshTrustBtn').onclick=async()=>{const {error}=await sb.rpc('refresh_trust_metrics',{p_account_id:state.activeAccount.id}); if(error) toast(error.message,'err'); else {toast('تم تحديث المؤشرات'); await renderTrust();}}; $('#logoutBtn').onclick=()=>{clearEphemeralUI(); sb.auth.signOut();};
+$('#openWalletBtn').onclick=openWallets; $('#openWalletsMore').onclick=openWallets; $('#openNotifications').onclick=openNotificationsModal; $('#openBusinessBtn').onclick=openBusinessModal; $('#createBusinessBtn').onclick=openBusinessModal; $('#addLedgerAccountBtn').onclick=openAddLedgerAccount; $('#refreshTrustBtn').onclick=async()=>{const {error}=await sb.rpc('refresh_trust_metrics',{p_account_id:state.activeAccount.id}); if(error) toast(error.message,'err'); else {toast('تم تحديث المؤشرات'); await renderTrust();}}; $('#logoutBtn').onclick=async()=>{setSessionLoading(true);state.authGeneration++;resetRuntimeState();clearEphemeralUI();await sb.auth.signOut({scope:'local'}).catch(()=>null);showAuth();};
 $('#transactionFilters').onclick=e=>{const b=e.target.closest('.chip'); if(!b) return; state.filter=b.dataset.filter; $$('#transactionFilters .chip').forEach(x=>x.classList.toggle('active',x===b)); renderTransactions(); };
 $('#publishAnnouncementBtn').onclick=async()=>{const {error}=await sb.rpc('admin_publish_announcement',{p_title:$('#announcementTitle').value,p_body:$('#announcementBody').value,p_audience:'all'}); if(error) toast(error.message,'err'); else {toast('تم نشر التعميم'); $('#announcementTitle').value=''; $('#announcementBody').value=''; }};
 $('#reportTypeChips').onclick=e=>{const b=e.target.closest('.chip'); if(!b) return; state.reportType=b.dataset.type; $$('#reportTypeChips .chip').forEach(x=>x.classList.toggle('active',x===b));};
